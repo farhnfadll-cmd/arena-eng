@@ -1,0 +1,658 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Arena Bahasa Inggris</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;700&display=swap">
+<style>
+/* Layout: satu kolom tengah (maks 880px). Beranda -> soal satu per satu -> hasil. Warna jawaban ala kuis kelas, nuansa biru tinta. */
+:root{
+  --bg:#eef2fb; --surface:#ffffff; --fg:#141c3a; --muted:#5b6585; --line:#d5dcef;
+  --accent:#2b4fd8; --accent-fg:#ffffff; --good:#17824a; --good-bg:#dff5e8; --bad:#c62f3a; --bad-bg:#fde4e6;
+  --a1:#e5484d; --a2:#2f6fed; --a3:#f5b700; --a4:#2a9d5c; --a5:#8e4ec6; --a3t:#2a2100;
+  --font-d:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif; --font-b:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1226; --surface:#171e3a; --fg:#eef1ff; --muted:#9aa4c8; --line:#2b3560;
+  --accent:#7d9bff; --accent-fg:#0d1226; --good:#5fd596; --good-bg:#12362a; --bad:#ff8088; --bad-bg:#3b1a22; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1226; --surface:#171e3a; --fg:#eef1ff; --muted:#9aa4c8; --line:#2b3560;
+  --accent:#7d9bff; --accent-fg:#0d1226; --good:#5fd596; --good-bg:#12362a; --bad:#ff8088; --bad-bg:#3b1a22; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-b);font-size:16px;line-height:1.5;
+  padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance;line-height:1.1}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.btn{background:var(--accent);color:var(--accent-fg);border:0;border-radius:10px;padding:14px 22px;font-weight:700;font-size:1.05rem}
+.btn:hover{filter:brightness(1.08)} .btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--fg);border:2px solid var(--line)}
+.btn.ghost:hover{border-color:var(--accent)}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+/* home */
+.hero{padding:8px 0 4px}
+.hero h1{font-size:clamp(2.2rem,8vw,3.8rem);font-weight:800;letter-spacing:-.02em}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);margin:10px 0 0;max-width:52ch}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label,.field .lbl{font-weight:700}
+input[type=text]{font:inherit;background:var(--bg);color:var(--fg);border:2px solid var(--line);border-radius:10px;padding:12px 14px;width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:transparent;border-radius:999px;padding:7px 14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg);font-weight:700}
+.chip small{opacity:.75;margin-left:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hint{color:var(--muted);font-size:.9rem}
+.lb{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.lb li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
+.lb li:last-child{border:0}
+.lb .rk{font-family:var(--font-d);font-weight:800;color:var(--accent)}
+.lb .sc{font-variant-numeric:tabular-nums;font-weight:700}
+
+/* game */
+.hud{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hud .pill{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-variant-numeric:tabular-nums}
+.hud .grow{flex:1;min-width:120px}
+.prog{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.prog>i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.timer{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.timer>i{display:block;height:100%;width:100%;background:var(--good)}
+.timer.low>i{background:var(--bad)}
+.pass{background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.pass .eyebrow{margin-bottom:6px}
+.pass .body{white-space:pre-line;max-width:68ch}
+.pass .body.quote{font-family:var(--font-d);font-size:1.4rem;font-weight:600}
+.pass svg{display:block;max-width:100%;height:auto;border-radius:8px;margin-top:10px}
+.q{font-family:var(--font-d);font-size:clamp(1.25rem,4.2vw,1.65rem);font-weight:600;line-height:1.25;max-width:60ch}
+.qmeta{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.tag{background:var(--accent);color:var(--accent-fg);border-radius:6px;padding:2px 9px;font-size:.78rem;font-weight:700}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;border:0;border-radius:12px;padding:14px;min-height:72px;color:#fff;font-weight:500;line-height:1.3;
+  box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .08s,opacity .2s}
+.opt:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.opt .k{flex:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-family:var(--font-d);font-weight:800;font-size:1.05rem}
+.opt[data-i="0"]{background:var(--a1)} .opt[data-i="1"]{background:var(--a2)} .opt[data-i="3"]{background:var(--a4)} .opt[data-i="4"]{background:var(--a5)}
+.opt[data-i="2"]{background:var(--a3);color:var(--a3t)} .opt[data-i="2"] .k{background:rgba(0,0,0,.14)}
+.opt.sel{outline:4px solid var(--fg);outline-offset:2px}
+.opt.dim{opacity:.35}
+.opt.right{outline:4px solid var(--good);outline-offset:2px;opacity:1}
+.opt.wrong{outline:4px solid var(--bad);outline-offset:2px;opacity:1}
+.opt .mark{margin-left:auto;font-weight:800;font-size:1.2rem}
+.opt:disabled{cursor:default}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.fb{border-radius:12px;padding:14px 16px;margin-top:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.fb.ok{background:var(--good-bg);color:var(--good)} .fb.no{background:var(--bad-bg);color:var(--bad)}
+.fb h3{font-size:1.3rem} .fb p{margin:2px 0 0;color:var(--fg)}
+.fb .pts{margin-left:auto;font-family:var(--font-d);font-weight:800;font-size:1.5rem;font-variant-numeric:tabular-nums}
+
+/* result */
+.big{font-family:var(--font-d);font-weight:800;font-size:clamp(2.6rem,12vw,4.5rem);line-height:1;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.stat{background:var(--bg);border-radius:10px;padding:12px}
+.stat b{display:block;font-family:var(--font-d);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.rev{display:flex;flex-direction:column;gap:12px}
+.rev .it{border-left:4px solid var(--bad);padding:4px 0 4px 12px}
+.rev .it p{margin:2px 0}
+.votes{margin-top:16px}
+.votes:empty{display:none}
+.vhead{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline;margin-bottom:8px}
+.vrow{display:grid;grid-template-columns:34px 1fr minmax(104px,auto);gap:10px;align-items:center;padding:4px 0;transition:opacity .3s}
+.vrow.dim{opacity:.35}
+.vrow .k{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-family:var(--font-d);font-weight:800;color:#fff}
+.vrow[data-i="0"] .k,.vrow[data-i="0"] .f{background:var(--a1)} .vrow[data-i="1"] .k,.vrow[data-i="1"] .f{background:var(--a2)}
+.vrow[data-i="2"] .k,.vrow[data-i="2"] .f{background:var(--a3)} .vrow[data-i="2"] .k{color:var(--a3t)}
+.vrow[data-i="3"] .k,.vrow[data-i="3"] .f{background:var(--a4)} .vrow[data-i="4"] .k,.vrow[data-i="4"] .f{background:var(--a5)}
+.vrow .tr{height:26px;background:var(--bg);border-radius:8px;overflow:hidden;display:flex;align-items:center}
+.vrow .f{height:100%;border-radius:8px;transition:width .4s}
+.vrow .tx{font-size:.8rem;font-weight:700;padding-left:8px;white-space:nowrap}
+.vrow .n{font-weight:700;font-size:.95rem;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vrow.right .tr{outline:3px solid var(--good)}
+.vrow.right .n::before{content:"✓ ";color:var(--good)}
+.lvbox{display:flex;flex-direction:column;gap:16px}
+.names{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.names span{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.88rem}
+@media (max-width:560px){.opts,.grid2{grid-template-columns:1fr}.opt{min-height:60px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const T = {
+  lit: "Knowing how to turn on a phone is not enough to be digitally literate. Digital citizens must also check whether news is true, protect their passwords, and treat other people politely online. Many people share posts quickly without reading them carefully, so false stories can spread within hours. Learning to pause and verify information is therefore an essential skill for students who use the internet every day.",
+  trans: "Students Should Use Public Transport\n\nMany students travel to school by private vehicles. However, traffic jams and air pollution are becoming serious problems in many cities. First, public transport reduces the number of vehicles on the road. Moreover, it helps families save money on fuel and parking. Some people say they prefer private cars for comfort. Although comfort matters, buses and trains can also be comfortable. Therefore, students should use public transport whenever possible.",
+  can: "Our School Canteen\n\nOur school canteen is located next to the sports field, and it is open from 6.30 a.m. to 3 p.m. It has long wooden tables and round chairs, so students can sit together while eating. The canteen serves rice, noodles, and fresh fruit juice. Near the entrance, there is a small shelf of healthy snacks. At the back, there is a water dispenser for students. Students are expected to throw their rubbish into the bins provided and keep the tables clean. The canteen is also a place where students chat with friends between lessons.",
+  info: "Infografis “Cut Plastic, Save Ocean”:\n(1) Bring a reusable water bottle.\n(2) Refuse plastic straws at cafés.\n(3) Use cloth bags when shopping.\n(4) Plastic bags can take hundreds of years to break down in nature.",
+  dl: "Digital literacy is important in modern society because people depend on the internet for information, communication, and work. Without digital literacy, people may easily believe false information or share personal data carelessly.",
+  wb: "Waste banks (bank sampah) are places where residents deposit sorted recyclable waste, such as plastic bottles, paper, and cans. In exchange, depositors receive small savings or credits. Many waste banks in Indonesia are managed by local youth groups and act as places to learn about environmental care. The collected waste is sold to recycling companies, which helps reduce the amount of waste sent to landfills."
+};
+const TOPICS = [
+  {id:"dialog", name:"Dialog & opini"},
+  {id:"quote", name:"Quote & gambar"},
+  {id:"lit", name:"Digital literacy"},
+  {id:"gram", name:"Simple Present"},
+  {id:"trans", name:"Public transport"},
+  {id:"can", name:"School canteen"},
+  {id:"kompleks", name:"PG Kompleks"}
+];
+// t: topik, p: teks bacaan, pt: label teks, a: kunci (huruf)
+const Q = [
+ {n:1,t:"dialog",pt:"Dialog",p:"Neng Siti: “Playing games is fun, but kids should also get enough sleep.”\nAldi: “I totally agree with you. I often stay up late and I feel tired at school.”\nNeng Siti: “Right. Good sleep helps us focus.”",q:"What does Aldi express?",o:["Strong disagreement with Neng Siti","Agreement with Neng Siti's opinion","Uncertainty about sleep","Anger about playing games","Refusal to continue the conversation"],a:"B"},
+ {n:2,t:"dialog",pt:"Dialog",p:"Yanti: “I think drinking coffee every day is not healthy for teenagers.”\nAsep: “Yes, too much caffeine can make it hard to sleep.”",q:"How does Asep respond to Yanti's opinion?",o:["He changes the topic","He strongly disagrees","He agrees with the opinion","He asks where coffee is sold","He refuses to answer"],a:"C"},
+ {n:3,t:"dialog",pt:"Dialog",p:"Dewi: “Reading books every day improves our vocabulary.”\nRizki: “I couldn't agree more. Reading also makes me more creative.”",q:"The expression “I couldn't agree more” means ...",o:["a refusal","complete agreement","confusion","an apology","a question"],a:"B"},
+ {n:4,t:"dialog",pt:"Dialog",p:"Nurul: “I think everyone should learn to cook at home.”\nFikri: “I don't think so. Eating at restaurants saves time.”",q:"What does Fikri express?",o:["Agreement","Disagreement","Apology","Excitement","Surprise"],a:"B"},
+ {n:5,t:"dialog",pt:"Dialog",p:"Gilang: “We should check the news before sharing it with friends.”\nPutri: “……. Otherwise, we might spread a rumor.”\nGilang: “Exactly.”",q:"Which expression best completes Putri's line?",o:["I completely disagree","I'm not sure about that","I don't know","I absolutely agree","That's impossible"],a:"D"},
+ {n:6,t:"dialog",pt:"Dialog",p:"Dede: “Online courses can help students learn new skills at home.”\nLestari: “I agree, but we should choose trusted platforms only.”\nDede: “True. Not every course is worth paying for.”",q:"What does Lestari's response show?",o:["Complete disagreement","Agreement followed by a caution","Refusal to learn online","Confusion about technology","Anger about online courses"],a:"B"},
+ {n:7,t:"dialog",pt:"Dialog",p:"Yusuf: “Everything posted by influencers is always accurate.”\nRatna: “I'm not sure about that. Influencers may promote products without checking the facts.”",q:"Why does Ratna disagree with Yusuf?",o:["Influencers never post anything","She believes influencers may share unverified claims","She dislikes social media completely","She has never used the internet","Yusuf is her teacher"],a:"B"},
+ {n:8,t:"quote",pt:"Quote",quote:1,p:"“Every expert was once a beginner.”",q:"What is the main message of the quote?",o:["Experts never make mistakes.","Anyone can grow their skills through learning from the start.","Beginners should not try new things.","Only talented people can become experts.","Experts do not need to keep learning."],a:"B"},
+ {n:9,t:"quote",pt:"Quote",quote:1,p:"“Teamwork makes the dream work.”",q:"What does the quote emphasize?",o:["Dreams are impossible to achieve.","Working together helps people reach their goals.","Individual success is unimportant.","Teams always fail.","Dreams should be kept secret."],a:"B"},
+ {n:10,t:"quote",pt:"Gambar",img:1,p:"Look at the picture of students cleaning a riverbank.",q:"Which caption is the most appropriate?",o:["Students paint the school wall.","Students clean the river to keep the water safe.","Students sell food at the market.","Students play football at the field.","Students read in the library."],a:"B"},
+ {n:11,t:"lit",pt:"Text",p:T.lit,q:"Based on the text, why does the writer argue that digital literacy goes beyond operating devices?",o:["Because devices are becoming cheaper every year.","Because digital literacy requires users to evaluate information and behave responsibly.","Because students should use advanced devices more than books.","Because internet users must learn every application before going online.","Because digital technology automatically improves grades."],a:"B"},
+ {n:12,t:"lit",pt:"Text",p:T.lit,q:"According to the text, what makes false stories spread so quickly?",o:["People regularly compare information from several reliable sources.","People often share posts without reading them carefully.","People always avoid reading information on social media.","People consistently separate facts from opinions.","People only use devices for studying."],a:"B"},
+ {n:13,t:"lit",pt:"Text",p:T.lit,q:"What can be inferred about people who share posts without reading them carefully?",o:["They are strong digital citizens.","They may contribute to the spread of misinformation.","They always protect other people's privacy.","They do not use the internet at all.","They are more responsible than others."],a:"B"},
+ {n:14,t:"lit",pt:"Text",p:T.lit,q:"Why does the writer emphasize pausing and verifying information?",o:["To encourage people to stop using technology.","To show that news is always false.","To persuade readers to become responsible and critical digital users.","To explain that technology is more important than education.","To suggest that digital literacy depends on expensive devices."],a:"C"},
+ {n:15,t:"gram",pt:"Kalimat siswa",p:"Many teenagers does not realize that unhealthy eating habits affect their concentration.",q:"Which revision corrects the grammatical error without changing the original meaning?",o:["Many teenagers do not realize that unhealthy eating habits affect their concentration.","Many teenagers does not realizes that unhealthy eating habits affects their concentration.","Many teenagers did not realizes that unhealthy eating habits affect their concentration.","Many teenagers do not realizes that unhealthy eating habits affects their concentration.","Many teenagers are not realize that unhealthy eating habits affect their concentration."],a:"A"},
+ {n:16,t:"gram",pt:"Kalimat siswa",p:"Fresh vegetables gives vitamins to the body.",q:"What is the correct revision?",o:["Fresh vegetables giving vitamins to the body.","Fresh vegetables is give vitamins to the body.","Fresh vegetables give vitamins to the body.","Fresh vegetables gave vitamins to the body.","Fresh vegetables are gives vitamins to the body."],a:"C"},
+ {n:17,t:"gram",pt:"Lengkapi kalimat",p:"Daily reading ______ students improve their vocabulary.",q:"Complete the sentence with the correct verb.",o:["help","helps","helping","helped","are helping"],a:"B"},
+ {n:18,t:"gram",q:"Which sentence is a correct negative form of the Simple Present Tense?",o:["Students doesn't join the club after school.","Students not join the club after school.","Students do not joins the club after school.","Students are not join the club after school.","Students do not join the club after school."],a:"E"},
+ {n:19,t:"gram",q:"Which sentence correctly uses the Simple Present Tense to describe a daily healthy habit?",o:["My sister sleep early every night.","My sister are sleep early every night.","My sister sleeping early every night.","My sister sleeps early every night.","My sister slept early every night."],a:"D"},
+ {n:20,t:"trans",pt:"Text",p:T.trans,q:"Public transport reduces traffic. ______, it saves money for families.",o:["However","Moreover","Therefore","Although","Because"],a:"B"},
+ {n:21,t:"trans",pt:"Text",p:T.trans,q:"Traffic jams are getting worse in many cities. ______, students often arrive late at school.",o:["However","As a result","Moreover","First","Although"],a:"B"},
+ {n:22,t:"trans",pt:"Text",p:T.trans,q:"Which sentence is the reiteration of the text?",o:["Public transport reduces the number of vehicles on the road.","Some people say they prefer private cars for comfort.","For these reasons, students should use public transport whenever possible.","Traffic jams and air pollution are becoming serious problems.","Buses can be as comfortable as private cars."],a:"C"},
+ {n:23,t:"trans",pt:"Text",p:T.trans,q:"What is the main idea of the entire text?",o:["Students should buy new vehicles to avoid traffic.","Students should use public transport because it helps reduce traffic and saves money.","Traffic jams are the only problem in cities.","Public transport is only for adults.","Students should walk to school in every condition."],a:"B"},
+ {n:24,t:"trans",pt:"Text",p:T.trans,q:"Based on the first paragraph, what can be inferred about students who travel by private vehicles?",o:["They are unaware of traffic problems.","They may contribute to traffic jams and pollution.","They never use public transport.","They do not care about their families.","They always arrive at school early."],a:"B"},
+ {n:25,t:"trans",pt:"Text",p:T.trans,q:"What is the main argument in the second paragraph?",o:["Public transport reduces traffic and helps families save money.","Private cars are more expensive than buses.","Students should never travel by car.","Traffic jams are caused by bus drivers.","Parking spaces should be removed."],a:"A"},
+ {n:26,t:"trans",pt:"Text",p:T.trans,q:"What is the problem stated in the first paragraph, and how is it addressed in the text?",o:["The problem is rising school fees; the text suggests scholarships.","The problem is traffic jams and pollution; the text suggests using public transport.","The problem is a lack of buses; the text suggests building more roads.","The problem is expensive fuel; the text suggests walking to school.","The problem is students' lack of comfort; the text suggests buying bicycles."],a:"B"},
+ {n:27,t:"can",pt:"Text",p:T.can,q:"What is the main idea of the text?",o:["The canteen is a place for sports activities.","The canteen provides food, a comfortable place to eat, and a space to socialize.","The canteen is closed in the afternoon.","The canteen sells only fresh fruit juice.","The canteen is located far from the field."],a:"B"},
+ {n:28,t:"can",pt:"Text",p:T.can,q:"Where is the shelf of healthy snacks located?",o:["At the back of the canteen","Next to the sports field","Near the entrance","Inside the classroom","Beside the water dispenser"],a:"C"},
+ {n:29,t:"can",pt:"Text",p:T.can,q:"Which facility is available at the back of the canteen?",o:["A water dispenser","A snack shelf","A sports field","A library corner","A long wooden table"],a:"A"},
+ {n:30,t:"can",pt:"Text",p:T.can,q:"What are students expected to do to keep the canteen clean?",o:["Bring their own food from home","Throw rubbish into the bins and keep the tables clean","Clean the sports field every day","Sit on the floor while eating","Avoid using the water dispenser"],a:"B"},
+ {n:31,t:"can",pt:"Text",p:T.can,q:"What can be concluded about the canteen's design?",o:["It is designed for students to eat and talk together comfortably.","It is designed only for teachers.","It is designed to be used at night.","It is designed to sell sports equipment.","It is designed to replace the library."],a:"A"},
+ {n:32,t:"can",pt:"Text",p:T.can,q:"What is the writer's main purpose in writing the text?",o:["To sell food in the canteen","To describe the canteen and its facilities","To persuade students to play sports","To complain about the canteen","To tell a story about a student"],a:"B"},
+ {n:33,t:"can",pt:"Text",p:T.can,q:"What is most likely to happen if students throw rubbish carelessly in the canteen?",o:["The canteen will become cleaner.","The canteen will become dirty and unpleasant.","The canteen will open earlier.","More water dispensers will be built.","Students will eat more healthy snacks."],a:"B"},
+ {n:34,t:"can",pt:"Text",p:T.can,q:"Based on the text, which decision is most appropriate for a student who wants a healthy snack?",o:["Go to the sports field to find snacks","Choose the shelf of healthy snacks near the entrance","Buy snacks at the water dispenser","Wait at the back of the canteen for fruit","Go home before 6.30 a.m."],a:"B"},
+ {n:35,t:"can",pt:"Text",p:T.can,q:"What is the relationship between the canteen rules and its facilities?",o:["The rules are unrelated to the facilities.","The rules help keep the facilities clean and comfortable for everyone.","The rules forbid students from using the facilities.","The facilities are used only by teachers.","The rules were made after the canteen closed."],a:"B"},
+ {n:36,t:"kompleks",pt:"Infografis",p:T.info,q:"Which TWO actions are recommended by the infographic to reduce plastic use?",o:["Bringing a reusable water bottle","Buying more plastic straws","Using cloth bags when shopping","Throwing plastic bags into the river","Leaving plastic bottles in the park"],a:"AC"},
+ {n:37,t:"kompleks",pt:"Text",p:T.dl,q:"Which reasons are supported by the text as the importance of digital literacy?",o:["People depend on the internet for information and communication.","People can avoid all online risks by owning expensive devices.","Without digital literacy, people may believe false information.","Digital literacy means never using social media again.","Careless sharing of personal data may happen without digital literacy."],a:"ACE"},
+ {n:38,t:"kompleks",pt:"Text",p:T.wb,q:"Which characteristics of waste banks are stated in the text?",o:["Residents deposit sorted recyclable waste.","Waste banks sell food to visitors.","Depositors receive small savings or credits.","Waste banks are always managed by the government only.","Waste banks are places where waste is burned."],a:"AC"},
+ {n:39,t:"kompleks",pt:"Text",p:T.wb,q:"Which benefits of waste banks for the environment and community are mentioned in the text?",o:["Reducing the amount of waste sent to landfills","Providing free water to all residents","Teaching people about environmental care","Increasing traffic in the village","Helping residents earn small savings"],a:"ACE"},
+ {n:40,t:"kompleks",pt:"Text",p:T.wb,q:"Which conclusions about the role of waste banks can be drawn from the text?",o:["Waste banks help build community awareness of environmental protection.","Waste banks have no connection to recycling companies.","Waste banks can make people more responsible for their waste.","Waste banks are useless for the environment.","Local youth groups can play an active role in managing waste banks."],a:"ACE"}
+];
+const L = "ABCDE";
+const RIVER = '<svg viewBox="0 0 480 200" role="img" aria-label="Ilustrasi siswa membersihkan tepi sungai" width="480"><rect width="480" height="200" fill="#bfe3f5"/><rect y="120" width="480" height="80" fill="#4aa3d6"/><path d="M0 120 Q120 100 240 118 T480 112 V130 H0Z" fill="#6bb86a"/><path d="M0 128 Q120 112 240 126 T480 122 V138 H0Z" fill="#8a6d4b"/><g fill="#2c3e6b"><circle cx="110" cy="78" r="12"/><rect x="98" y="92" width="24" height="34" rx="8"/><circle cx="230" cy="82" r="12"/><rect x="218" y="96" width="24" height="30" rx="8"/><circle cx="350" cy="76" r="12"/><rect x="338" y="90" width="24" height="36" rx="8"/></g><g fill="#f5b700"><rect x="130" y="100" width="16" height="22" rx="3"/><rect x="368" y="98" width="16" height="22" rx="3"/></g><g stroke="#2c3e6b" stroke-width="4" stroke-linecap="round"><path d="M122 104 L142 112"/><path d="M242 108 L262 118"/><path d="M362 100 L378 108"/></g><circle cx="262" cy="150" r="6" fill="#e5e5e5"/><circle cx="60" cy="158" r="5" fill="#e5e5e5"/></svg>';
+
+const $ = s => document.querySelector(s), app = $("#app");
+const S = {sel:new Set(), topics:new Set(TOPICS.map(t=>t.id)), limit:0, shuffle:false, name:""};
+let G = null, tick = null;
+const LB_KEY = "arena-inggris-11-lb";
+const lbGet = () => { try { return JSON.parse(localStorage.getItem(LB_KEY)||"[]"); } catch(e){ return []; } };
+const lbAdd = r => { try { const a = lbGet(); a.push(r); a.sort((x,y)=>y.score-x.score); localStorage.setItem(LB_KEY, JSON.stringify(a.slice(0,10))); } catch(e){} };
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const count = id => Q.filter(q=>q.t===id).length;
+
+function home(){
+  clearInterval(tick); G = null; SCREEN = "home"; clearInterval(LV.tt);
+  const lb = lbGet();
+  const total = Q.filter(q=>S.topics.has(q.t)).length;
+  app.innerHTML = `
+  <div class="hero"><div class="eyebrow">Latihan PSAS Ganjil · Kelas 11</div>
+    <h1>Arena <span>Bahasa Inggris</span></h1>
+    <p>Jawab soal satu per satu, kumpulkan poin, dan jaga streak benarmu. Makin cepat menjawab, makin besar poinnya.</p></div>
+  <div class="card"><div class="actions" style="margin:0"><button class="btn" id="golive">Masuk kelas live</button><span class="hint">Untuk satu kelas bersama guru. Mode di bawah ini untuk latihan sendiri.</span></div></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:18px">
+    <div class="field"><label for="nm">Nama pemain</label><input id="nm" type="text" maxlength="24" placeholder="Tulis namamu" value="${esc(S.name)}" autocomplete="off"></div>
+    <div class="field"><span class="lbl">Topik soal</span>
+      <div class="chips" id="topics">${TOPICS.map(t=>`<button class="chip" data-id="${t.id}" aria-pressed="${S.topics.has(t.id)}">${t.name}<small>${count(t.id)}</small></button>`).join("")}</div>
+      <div class="hint"><button class="chip" id="all" style="padding:3px 10px">Pilih semua</button></div></div>
+    <div class="grid2">
+      <div class="field"><span class="lbl">Waktu per soal</span>
+        <div class="chips" id="lim">${[[0,"Tanpa batas"],[45,"45 dtk"],[90,"90 dtk"]].map(([v,n])=>`<button class="chip" data-v="${v}" aria-pressed="${S.limit===v}">${n}</button>`).join("")}</div>
+        <div class="hint">Soal dengan teks panjang butuh waktu baca. Pilih 90 dtk bila ragu.</div></div>
+      <div class="field"><span class="lbl">Urutan</span>
+        <div class="chips" id="ord">${[[false,"Sesuai nomor"],[true,"Acak"]].map(([v,n])=>`<button class="chip" data-v="${v}" aria-pressed="${S.shuffle===v}">${n}</button>`).join("")}</div>
+        <div class="hint">Soal dengan teks yang sama tetap berdampingan.</div></div>
+    </div>
+    <div class="actions" style="margin:0"><button class="btn" id="go" ${total?"":"disabled"}>Mulai · ${total} soal</button></div>
+  </div>
+  ${lb.length?`<div class="card"><h2 style="font-size:1.3rem;margin-bottom:8px">Skor tertinggi di perangkat ini</h2><ol class="lb">${lb.slice(0,5).map((r,i)=>`<li><span class="rk">${i+1}</span><span>${esc(r.name)} <span class="hint">· ${r.ok}/${r.total} benar</span></span><span class="sc">${r.score}</span></li>`).join("")}</ol></div>`:""}`;
+  $("#golive").onclick = live;
+  $("#nm").oninput = e => S.name = e.target.value;
+  $("#topics").onclick = e => { const b = e.target.closest(".chip"); if(!b) return; const id=b.dataset.id; S.topics.has(id)?S.topics.delete(id):S.topics.add(id); home(); $(`.chip[data-id="${id}"]`).focus(); };
+  $("#all").onclick = () => { TOPICS.forEach(t=>S.topics.add(t.id)); home(); };
+  $("#lim").onclick = e => { const b=e.target.closest(".chip"); if(!b) return; S.limit=+b.dataset.v; home(); $(`#lim .chip[data-v="${S.limit}"]`).focus(); };
+  $("#ord").onclick = e => { const b=e.target.closest(".chip"); if(!b) return; S.shuffle=b.dataset.v==="true"; home(); $(`#ord .chip[data-v="${S.shuffle}"]`).focus(); };
+  $("#go").onclick = () => start(Q.filter(q=>S.topics.has(q.t)));
+}
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function orderQs(list){
+  if(!S.shuffle) return list.slice();
+  // kelompokkan soal yang berbagi teks bacaan, acak antar kelompok
+  const groups=[]; list.forEach(q=>{ const g=groups[groups.length-1]; if(g && q.p && g[0].p===q.p && !q.quote && g[0].t===q.t) g.push(q); else groups.push([q]); });
+  return shuffle(groups).flat();
+}
+function start(list){
+  SCREEN = "solo";
+  S.name = (S.name||"").trim();
+  G = {qs:orderQs(list), i:0, score:0, streak:0, best:0, ok:0, log:[], sel:new Set(), done:false, t0:0};
+  question();
+}
+
+function question(){
+  clearInterval(tick);
+  const q = G.qs[G.i], multi = q.a.length>1;
+  G.sel = new Set(); G.done = false; G.rev = false; G.t0 = performance.now();
+  const pass = q.p ? `<div class="pass"><div class="eyebrow">${q.pt||"Teks"}</div><div class="body ${q.quote?"quote":""}">${esc(q.p)}</div>${q.img?RIVER:""}</div>` : "";
+  app.innerHTML = `
+  <div class="hud"><span class="pill">Soal ${G.i+1}/${G.qs.length}</span><div class="grow"><div class="prog"><i style="width:${G.i/G.qs.length*100}%"></i></div></div>
+    <span class="pill" id="streak" title="Jawaban benar berturut-turut">Streak ${G.streak}</span><span class="pill" id="score">${G.score} poin</span></div>
+  ${S.limit?`<div class="timer" id="timer" role="timer" aria-label="Sisa waktu"><i></i></div>`:""}
+  <div class="card" id="qcard">
+    <div class="qmeta"><span class="tag">No. ${q.n}</span>${multi?`<span class="tag" style="background:var(--a5)">Pilih ${q.a.length===2&&/TWO/.test(q.q)?"2 jawaban":"semua yang benar"}</span>`:""}</div>
+    ${pass}
+    <div class="q" id="qtext">${esc(q.q)}</div>
+    <div class="opts" style="margin-top:16px" role="${multi?"group":"radiogroup"}" aria-labelledby="qtext">${q.o.map((o,i)=>`<button class="opt" data-i="${i}" ${multi?`aria-pressed="false"`:`role="radio" aria-checked="false"`}><span class="k">${L[i]}</span><span>${esc(o)}</span><span class="mark"></span></button>`).join("")}</div>
+    <div class="actions" id="act">${multi?`<button class="btn" id="lock" disabled>Kunci jawaban</button><span class="hint">Pilih lebih dari satu, lalu kunci.</span>`:""}</div>
+    <div id="fb" aria-live="polite"></div>
+  </div>`;
+  document.querySelector(".opts").onclick = e => { const b=e.target.closest(".opt"); if(b && !G.done) pick(+b.dataset.i); };
+  if(multi) $("#lock").onclick = () => submit(false);
+  if(S.limit){ tick = setInterval(()=>{
+    const left = S.limit - (performance.now()-G.t0)/1000, el=$("#timer");
+    if(!el) return clearInterval(tick);
+    el.firstElementChild.style.width = Math.max(0,left/S.limit*100)+"%"; el.classList.toggle("low", left<=Math.min(10,S.limit*.25));
+    if(left<=0) submit(true);
+  },100); }
+  window.scrollTo({top:0});
+}
+function pick(i){
+  const q = G.qs[G.i];
+  if(q.a.length===1){ G.sel=new Set([i]); submit(false); return; }
+  G.sel.has(i)?G.sel.delete(i):G.sel.add(i);
+  document.querySelectorAll(".opt").forEach((b,k)=>{ b.classList.toggle("sel",G.sel.has(k)); b.setAttribute("aria-pressed",G.sel.has(k)); });
+  $("#lock").disabled = G.sel.size===0;
+}
+function submit(timeout){
+  if(G.done) return; G.done = true; clearInterval(tick);
+  const q = G.qs[G.i], key = new Set([...q.a].map(c=>L.indexOf(c)));
+  const chosen = [...G.sel].sort();
+  const ok = !timeout && chosen.length===key.size && chosen.every(i=>key.has(i));
+  G.pend = {ok, timeout, chosen, key, elapsed:(performance.now()-G.t0)/1000};
+  G.log.push({q, chosen, ok, timeout});
+  document.querySelectorAll(".opt").forEach((b,k)=>{ b.disabled = true; b.classList.toggle("sel",G.sel.has(k)); b.classList.toggle("dim",!G.sel.has(k)); });
+  $("#act").innerHTML = `<span class="hint">${timeout?"Waktu habis.":"Jawabanmu sudah terkunci."} Siap melihat jawabannya?</span>`;
+  $("#fb").innerHTML = `<div class="actions"><button class="btn" id="rv">Tampilkan jawaban benar</button><span class="hint">atau tekan Enter</span></div>`;
+  $("#rv").onclick = reveal; $("#rv").focus({preventScroll:true});
+}
+function reveal(){
+  if(!G.done || G.rev) return; G.rev = true;
+  const q = G.qs[G.i], {ok,timeout,key,elapsed} = G.pend;
+  let pts = 0;
+  if(ok){ G.streak++; G.best=Math.max(G.best,G.streak); G.ok++;
+    const base = S.limit ? Math.round(500+500*Math.max(0,1-elapsed/S.limit)) : 1000;
+    pts = base + Math.min(G.streak-1,5)*50; G.score += pts;
+  } else G.streak = 0;
+  document.querySelectorAll(".opt").forEach((b,k)=>{
+    b.classList.remove("sel","dim");
+    const isKey = key.has(k), isSel = G.sel.has(k);
+    if(isKey){ b.classList.add("right"); b.querySelector(".mark").textContent="✓"; }
+    else if(isSel){ b.classList.add("wrong"); b.querySelector(".mark").textContent="✗"; }
+    else b.classList.add("dim");
+  });
+  $("#score").textContent = G.score+" poin"; $("#streak").textContent = "Streak "+G.streak;
+  $("#act").innerHTML = "";
+  $("#fb").innerHTML = `<div class="fb ${ok?"ok":"no"}"><div><h3>${ok?"Benar!":timeout?"Waktu habis":"Belum tepat"}</h3><p>${ok?(G.streak>1?`Streak ${G.streak} berturut-turut.`:"Pertahankan."):`Jawaban yang benar: <b>${q.a.split("").join(", ")}</b>`}</p></div><span class="pts">${ok?"+"+pts:"0"}</span></div>
+    <div class="actions"><button class="btn" id="nx">${G.i+1<G.qs.length?"Soal berikutnya":"Lihat hasil"}</button><span class="hint">atau tekan Enter</span></div>`;
+  $("#nx").onclick = next; $("#nx").focus({preventScroll:true});
+  $("#fb").scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function next(){ G.i++; G.i<G.qs.length ? question() : result(); }
+
+function result(){
+  clearInterval(tick);
+  const total=G.qs.length, acc=Math.round(G.ok/total*100), name=S.name||"Pemain";
+  if(!G.saved){ lbAdd({name,score:G.score,ok:G.ok,total}); G.saved=true; }
+  const title = acc>=90?"Juara kelas":acc>=75?"Hampir sempurna":acc>=60?"Terus naik":"Ayo coba lagi";
+  const wrong = G.log.filter(l=>!l.ok), lb = lbGet();
+  app.innerHTML = `
+  <div class="card" style="display:flex;flex-direction:column;gap:16px">
+    <div><div class="eyebrow">${esc(name)} · ${title}</div><div class="big">${G.score}</div><div class="hint">poin total</div></div>
+    <div class="stats"><div class="stat"><b>${G.ok}/${total}</b>benar</div><div class="stat"><b>${acc}%</b>akurasi</div><div class="stat"><b>${G.best}</b>streak terbaik</div></div>
+    <div class="actions" style="margin:0"><button class="btn" id="again">Main lagi</button>${wrong.length?`<button class="btn ghost" id="redo">Ulangi ${wrong.length} soal yang salah</button>`:""}<button class="btn ghost" id="hm">Ke beranda</button></div>
+  </div>
+  ${wrong.length?`<div class="card"><h2 style="font-size:1.3rem;margin-bottom:12px">Soal untuk dipelajari lagi</h2><div class="rev">${wrong.map(l=>`<div class="it"><div class="eyebrow">No. ${l.q.n}${l.timeout?" · waktu habis":""}</div><p>${esc(l.q.q)}</p><p>Jawabanmu: <b>${l.chosen.length?l.chosen.map(i=>L[i]).join(", "):"tidak menjawab"}</b> · Benar: <b style="color:var(--good)">${l.q.a.split("").join(", ")}</b> — ${l.q.a.split("").map(c=>esc(l.q.o[L.indexOf(c)])).join(" / ")}</p></div>`).join("")}</div></div>`:`<div class="card"><b>Semua jawaban benar.</b> Tidak ada soal yang perlu diulang.</div>`}
+  <div class="card"><h2 style="font-size:1.3rem;margin-bottom:8px">Skor tertinggi di perangkat ini</h2><ol class="lb">${lb.slice(0,5).map((r,i)=>`<li><span class="rk">${i+1}</span><span>${esc(r.name)} <span class="hint">· ${r.ok}/${r.total} benar</span></span><span class="sc">${r.score}</span></li>`).join("")}</ol></div>`;
+  $("#again").onclick = () => start(G.qs.slice().sort((a,b)=>a.n-b.n));
+  if($("#redo")) $("#redo").onclick = () => start(wrong.map(l=>l.q));
+  $("#hm").onclick = home;
+  window.scrollTo({top:0}); $("#again").focus({preventScroll:true});
+}
+
+document.addEventListener("keydown", e => {
+  if(!G || e.target.tagName==="INPUT" || e.ctrlKey || e.metaKey) return;
+  if(G.i>=G.qs.length) return;
+  if(!G.done){
+    const k = e.key.toUpperCase(), i = L.indexOf(k) >= 0 ? L.indexOf(k) : "12345".indexOf(k);
+    if(i>=0 && i<5 && k.length===1){ pick(i); }
+    else if(e.key==="Enter" && G.qs[G.i].a.length>1 && G.sel.size){ e.preventDefault(); submit(false); }
+  } else if(e.key==="Enter" && !["nx","rv"].includes(document.activeElement.id)){ e.preventDefault(); G.rev ? next() : reveal(); }
+});
+/* ===== KELAS LIVE (guru + siswa, data bersama lewat db) ===== */
+const QN = Object.fromEntries(Q.map(q=>[q.n,q]));
+/* PURE-START */
+function cleanChoice(q,str){
+  const set=[...new Set(String(str||"").toUpperCase().split("").filter(ch=>"ABCDE".includes(ch)))].sort();
+  return (q.a.length===1?set.slice(0,1):set).join("");
+}
+function keyOf(q){ return [...q.a].sort().join(""); }
+// Statistik dihitung ulang dari dokumen jawaban setiap kali, tidak pernah dari penghitung yang ditambah-tambah.
+function liveTally(q,round,answers,players){
+  const c=[0,0,0,0,0], who={};
+  for(const uid in answers){
+    const d=answers[uid]; if(!d||d.r!==round||!d.a) continue;
+    const ch=cleanChoice(q,d.a[q.n]); if(!ch) continue;
+    who[uid]=ch; for(const l of ch) c["ABCDE".indexOf(l)]++;
+  }
+  const answered=Object.keys(who).length, part=new Set(Object.keys(who));
+  for(const uid in players) if(players[uid]&&players[uid].r===round) part.add(uid);
+  const waiting=[...part].filter(u=>!(u in who));
+  return {c,answered,participants:part.size,waiting,who};
+}
+function liveScores(st,answers,players){
+  const rows={}, round=st.round, upto=st.upto==null?-1:st.upto;
+  const add=uid=>rows[uid]||(rows[uid]={uid,ok:0});
+  for(const uid in players) if(players[uid]&&players[uid].r===round) add(uid);
+  for(let i=0;i<=upto&&i<st.order.length;i++){
+    const q=QN[st.order[i]];
+    for(const uid in answers){
+      const d=answers[uid]; if(!d||d.r!==round||!d.a) continue;
+      add(uid); if(cleanChoice(q,d.a[q.n])===keyOf(q)) rows[uid].ok++;
+    }
+  }
+  return Object.values(rows).map(r=>({uid:r.uid,ok:r.ok,name:(players[r.uid]&&players[r.uid].name)||"Siswa",score:r.ok*1000}))
+    .sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name));
+}
+function reduceState(st,act,o){
+  o=o||{};
+  if(act==="new") return {round:o.round,order:o.order,idx:0,status:"lobby",limit:o.limit||0,upto:-1,openedAt:0};
+  if(!st) return st;
+  if(act==="open" && (st.status==="lobby"||st.status==="closed")) return {...st,status:"open",openedAt:o.now};
+  if(act==="close" && st.status==="open") return {...st,status:"closed"};
+  if(act==="reveal" && st.status==="closed") return {...st,status:"revealed",upto:st.idx};
+  if(act==="next" && st.status==="revealed") return st.idx+1<st.order.length ? {...st,idx:st.idx+1,status:"open",openedAt:o.now} : {...st,status:"ended"};
+  if(act==="end" && st.status!=="ended") return {...st,status:"ended"};
+  return st;
+}
+// Satu dokumen jawaban per siswa (answers/<id>), satu soal per kunci. Perubahan jawaban menimpa kunci yang sama.
+function makeSender(db,uid,getRound,getOwn){
+  let chain=Promise.resolve(), pending=0; const api={err:false, busy:()=>pending>0};
+  api.send=(n,choice)=>{
+    pending++;
+    chain=chain.then(async()=>{
+      for(let attempt=0;attempt<3;attempt++){
+        try{
+          const r=getRound(), ref=db.doc("answers/"+uid); let own=getOwn();
+          if(!own||own.r!==r){ const s=await ref.get(); own=s.exists?s.data():null; }
+          if(own&&own.r===r) await ref.update({a:{[n]:choice},ts:Date.now()});
+          else await ref.set({r,a:{[n]:choice},ts:Date.now()});
+          api.err=false; return;
+        }catch(e){ api.err=true; await new Promise(res=>setTimeout(res,300*(attempt+1))); }
+      }
+    }).then(()=>{pending--;});
+    return chain;
+  };
+  return api;
+}
+const fmtPct=v=>String(Math.round(v*10)/10).replace(".",",")+"%";
+/* PURE-END */
+
+const LV = {db:null, uid:null, can:null, admin:false, init:false, loaded:false, loadedP:false, subErr:false, state:null, players:{}, answers:{}, ansPending:false,
+  view:null, key:"", name:"", local:{}, draft:{}, localRound:null, sender:null, joining:"", topics:new Set(TOPICS.map(t=>t.id)), limit:0, tt:null, tm:null};
+const LK="arena-live-view", NK="arena-live-name";
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}}, lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let SCREEN="home";
+
+function liveWhy(){
+  if(!(window.claude&&window.claude.use)) return "Halaman ini harus dibuka lewat claude.ai agar kelas live bisa dipakai.";
+  if(!LV.init) return "Menghubungkan ke data kelas...";
+  if(!LV.uid) return "Kamu belum masuk ke claude.ai atau membuka lewat tautan publik, jadi data kelas tidak bisa dipakai. Masuk dengan akun yang diundang guru.";
+  if(!LV.db) return "Data kelas belum tersedia di tampilan ini.";
+  if(LV.subErr) return "Koneksi ke data kelas terputus. Muat ulang halaman.";
+  if(LV.can===false) return "Akunmu hanya bisa melihat. Minta guru mengubah aksesmu menjadi Contributor di menu Share.";
+  return "";
+}
+function passHTML(q){ return q.p?`<div class="pass"><div class="eyebrow">${q.pt||"Teks"}</div><div class="body ${q.quote?"quote":""}">${esc(q.p)}</div>${q.img?RIVER:""}</div>`:""; }
+function optsHTML(q){ return q.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${L[i]}</span><span>${esc(o)}</span><span class="mark"></span></button>`).join(""); }
+function qHead(q){ return `<div class="qmeta"><span class="tag">No. ${q.n}</span>${q.a.length>1?`<span class="tag" style="background:var(--a5)">Pilih ${/TWO/.test(q.q)?"2 jawaban":"semua yang benar"}</span>`:""}</div>`; }
+function statsHTML(q,tl,showKey){
+  const key=new Set(q.a), top=Math.max(...tl.c), tops=top>0?L.split("").filter((l,i)=>tl.c[i]===top):[];
+  const rows=q.o.map((o,i)=>{
+    const pct=tl.answered?tl.c[i]/tl.answered*100:0;
+    return `<div class="vrow ${showKey?(key.has(L[i])?"right":"dim"):""}" data-i="${i}"><span class="k">${L[i]}</span><div class="tr" aria-hidden="true"><div class="f" style="width:${tl.c[i]?Math.max(3,pct):0}%"></div></div><span class="n">${tl.c[i]} siswa (${fmtPct(pct)})</span></div>`;
+  }).join("");
+  return `<div class="vhead"><b>Statistik jawaban</b><span class="hint">Total menjawab: ${tl.answered} dari ${tl.participants} siswa · Belum menjawab: ${tl.participants-tl.answered}</span></div>${rows}
+    <div class="hint" style="margin-top:8px">${tops.length?`Paling banyak dipilih: ${tops.join(", ")} (${top} siswa)`:"Belum ada jawaban masuk."}${q.a.length>1?" · Soal ini boleh memilih lebih dari satu, jadi persentase bisa lebih dari 100% jika dijumlahkan.":""}</div>`;
+}
+function lbHTML(rows,meUid,limit){
+  if(!rows.length) return `<p class="hint">Belum ada peserta.</p>`;
+  return `<ol class="lb">${rows.slice(0,limit).map((r,i)=>`<li><span class="rk">${i+1}</span><span>${esc(r.name)}${r.uid===meUid?" (kamu)":""} <span class="hint">· ${r.ok} benar</span></span><span class="sc">${r.score}</span></li>`).join("")}</ol>`;
+}
+const namesHTML=(uids)=>`<div class="names">${uids.map(u=>`<span>${esc((LV.players[u]&&LV.players[u].name)||"Siswa")}</span>`).join("")}</div>`;
+const curQ=()=>{ const st=LV.state; return st&&st.order&&st.order[st.idx]!=null&&st.status!=="lobby"&&st.status!=="ended"?QN[st.order[st.idx]]:null; };
+function roundPlayers(){ const r=LV.state&&LV.state.round; return Object.keys(LV.players).filter(u=>LV.players[u].r===(r||"")||LV.players[u].r===r); }
+
+function live(){
+  SCREEN="live"; clearInterval(tick); G=null; clearInterval(LV.tt); LV.view=null; LV.key="";
+  const w=liveWhy(), canJoin=LV.db&&LV.can!==false, nm=LV.name||lsGet(NK)||"";
+  app.innerHTML=`<div class="hero"><div class="eyebrow">Kelas live</div><h1>Gabung <span>kelas</span></h1><p>Guru mengatur soal di dashboard. Siswa menjawab dari perangkat masing-masing dan statistik jawaban muncul langsung.</p></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:16px">
+    ${w?`<div class="hint" id="lw">${w}</div>`:`<div class="hint" id="lw">Terhubung. ${Object.keys(LV.players).length} siswa tercatat.</div>`}
+    <div class="field"><label for="lname">Nama atau kode peserta</label><input id="lname" type="text" maxlength="24" value="${esc(nm)}" placeholder="Contoh: Aldi 11A" autocomplete="off"><div class="hint" id="lerr"></div></div>
+    <div class="actions" style="margin:0"><button class="btn" id="lj" ${canJoin?"":"disabled"}>Gabung sebagai siswa</button>${LV.admin?`<button class="btn ghost" id="lt">Buka dashboard guru</button>`:""}<button class="btn ghost" id="lh">Kembali ke beranda</button></div>
+  </div>`;
+  $("#lh").onclick=home;
+  $("#lj").onclick=()=>{
+    const name=$("#lname").value.trim().replace(/\s+/g," ");
+    if(name.length<2){ $("#lerr").textContent="Tulis nama atau kode minimal 2 huruf."; return; }
+    const r=(LV.state&&LV.state.round)||"";
+    const dup=Object.keys(LV.players).some(u=>u!==LV.uid&&LV.players[u].r===r&&String(LV.players[u].name).toLowerCase()===name.toLowerCase());
+    if(dup){ $("#lerr").textContent="Nama itu sudah dipakai peserta lain. Tambahkan kelas atau inisial."; return; }
+    LV.name=name; lsSet(NK,name); enterLive("siswa");
+  };
+  if(LV.admin) $("#lt").onclick=()=>enterLive("guru");
+}
+function enterLive(view){
+  SCREEN="live"; LV.view=view; LV.key=""; lsSet(LK,JSON.stringify({v:view,t:Date.now()}));
+  app.innerHTML=`<div class="hud"><button class="btn ghost" id="lback" style="padding:8px 14px">← Keluar</button><span class="hint" id="lwho">${view==="guru"?"Dashboard guru":"Siswa: "+esc(LV.name)}</span></div><div id="lv" class="lvbox"></div>`;
+  $("#lback").onclick=()=>{ clearInterval(LV.tt); lsSet(LK,""); live(); };
+  liveRefresh();
+}
+function liveSchedule(){ if(LV.tm) return; LV.tm=setTimeout(()=>{LV.tm=null; liveRefresh();},120); }
+function liveRefresh(){
+  if(SCREEN!=="live"||!LV.view||!$("#lv")) return;
+  if(LV.view==="guru") teacherRefresh(); else studentRefresh();
+}
+
+/* ---------- siswa ---------- */
+const remoteChoice=(q)=>{ const st=LV.state, own=LV.answers[LV.uid]; return st&&own&&own.r===st.round?cleanChoice(q,own.a&&own.a[q.n]):""; };
+const effChoice=(q)=>LV.local[q.n]!==undefined?LV.local[q.n]:remoteChoice(q);
+function ensureJoined(){
+  const st=LV.state, me=LV.players[LV.uid], r=(st&&st.round)||"";
+  if(!LV.name||!LV.loadedP||!LV.db||LV.can===false) return;
+  if(me&&me.name===LV.name&&me.r===r) return;
+  const tag=r+"|"+LV.name; if(LV.joining===tag) return; LV.joining=tag;
+  LV.db.doc("players/"+LV.uid).set({name:LV.name,r,t:Date.now()}).catch(()=>{LV.joining="";});
+}
+function studentRefresh(){
+  const st=LV.state;
+  if(st&&LV.localRound!==st.round){ LV.localRound=st.round; LV.local={}; LV.draft={}; }
+  ensureJoined();
+  const key=st?`${st.round}|${st.idx}|${st.status}`:"none";
+  if(key!==LV.key){ LV.key=key; studentShell(); }
+  studentDyn();
+}
+function studentShell(){
+  const st=LV.state, box=$("#lv"), q=curQ();
+  if(!st||st.status==="lobby"){ box.innerHTML=`<div class="card"><div class="eyebrow">Halo, ${esc(LV.name)}</div><h2 style="font-size:1.7rem;margin:6px 0">Menunggu guru memulai</h2><p class="hint" id="lv-dyn"></p></div>`; return; }
+  if(st.status==="ended"){ box.innerHTML=`<div class="card"><div class="eyebrow">Sesi selesai</div><h2 style="font-size:1.7rem;margin:6px 0 12px">Peringkat kelas</h2><div id="lv-dyn"></div></div>`; return; }
+  box.innerHTML=`<div class="hud"><span class="pill">Soal ${st.idx+1}/${st.order.length}</span><div class="grow"><div class="prog"><i style="width:${st.idx/st.order.length*100}%"></i></div></div><span class="pill" id="lv-score"></span></div>
+  <div class="card">${qHead(q)}${passHTML(q)}<div class="q">${esc(q.q)}</div><div class="opts" style="margin-top:16px">${optsHTML(q)}</div>
+    <div class="actions" id="lv-act"></div><div class="hint" id="lv-dyn" aria-live="polite" style="margin-top:10px"></div>
+    <div class="votes" id="lv-stats"></div><div id="lv-fb"></div></div>`;
+  box.querySelector(".opts").onclick=e=>{ const b=e.target.closest(".opt"); if(b) studentPick(+b.dataset.i); };
+  window.scrollTo({top:0});
+}
+function studentSender(){
+  if(!LV.sender) LV.sender=makeSender(LV.db,LV.uid,()=>LV.state&&LV.state.round,()=>LV.answers[LV.uid]);
+  return LV.sender;
+}
+function studentSend(q,choice){ LV.local[q.n]=choice; LV.lastSend={q,choice}; studentSender().send(q.n,choice).then(()=>{ if(SCREEN==="live") studentDyn(); }); studentDyn(); }
+function studentPick(i){
+  const st=LV.state, q=curQ(); if(!st||!q||st.status!=="open"||!LV.loaded||LV.can===false) return;
+  const l=L[i];
+  if(q.a.length===1){ studentSend(q,l); return; }
+  const d=LV.draft[q.n]||(LV.draft[q.n]=new Set(effChoice(q).split("").filter(Boolean)));
+  d.has(l)?d.delete(l):d.add(l); studentDyn();
+}
+function studentDyn(){
+  const st=LV.state, dyn=$("#lv-dyn"); if(!dyn) return;
+  if(!st||st.status==="lobby"){ dyn.textContent=`${roundPlayers().length} siswa sudah bergabung.`; return; }
+  if(st.status==="ended"){ const rows=liveScores(st,LV.answers,LV.players); const i=rows.findIndex(r=>r.uid===LV.uid);
+    dyn.innerHTML=(i>=0?`<p style="margin:0 0 10px"><b>Posisimu: ${i+1} dari ${rows.length}</b> · ${rows[i].ok} jawaban benar</p>`:"")+lbHTML(rows,LV.uid,10); return; }
+  const q=curQ(); if(!q) return;
+  const multi=q.a.length>1, eff=effChoice(q), rc=remoteChoice(q), confirmed=eff&&rc===eff&&!LV.ansPending;
+  const shown=new Set((multi&&st.status==="open"?(LV.draft[q.n]?[...LV.draft[q.n]]:eff.split("")):eff.split("")).filter(Boolean));
+  const key=new Set(q.a);
+  document.querySelectorAll("#lv .opt").forEach((b,k)=>{
+    const l=L[k]; b.disabled=st.status!=="open"; b.classList.remove("sel","dim","right","wrong"); b.querySelector(".mark").textContent="";
+    if(st.status==="open"){ if(shown.has(l)) b.classList.add("sel"); }
+    else if(st.status==="closed"){ shown.has(l)?b.classList.add("sel"):b.classList.add("dim"); }
+    else { if(key.has(l)){ b.classList.add("right"); b.querySelector(".mark").textContent="✓"; } else if(shown.has(l)){ b.classList.add("wrong"); b.querySelector(".mark").textContent="✗"; } else b.classList.add("dim"); }
+  });
+  const act=$("#lv-act"); act.innerHTML="";
+  const sender=LV.sender;
+  if(st.status==="open"){
+    if(!LV.loaded) dyn.textContent="Menyambungkan...";
+    else if(multi){
+      const dr=LV.draft[q.n]?[...LV.draft[q.n]].sort().join(""):eff;
+      dyn.textContent = confirmed&&dr===eff ? "Jawabanmu terkirim ✓. Kamu masih bisa mengubahnya sampai guru menutup voting." : sender&&sender.err ? "Gagal terkirim. Coba kirim lagi." : eff&&!confirmed&&dr===eff ? "Mengirim..." : "Pilih semua jawaban yang benar, lalu kirim.";
+      const b=document.createElement("button"); b.className="btn"; b.textContent=eff?"Perbarui jawaban":"Kirim jawaban"; b.disabled=!dr||(dr===eff&&confirmed);
+      b.onclick=()=>studentSend(q,[...LV.draft[q.n]].sort().join("")); act.appendChild(b);
+    } else {
+      dyn.textContent = !eff ? "Pilih satu jawaban." : confirmed ? "Jawabanmu terkirim ✓. Kamu masih bisa mengganti sampai guru menutup voting." : sender&&sender.err ? "Gagal terkirim. Coba kirim lagi." : "Mengirim...";
+      if(sender&&sender.err&&LV.lastSend){ const b=document.createElement("button"); b.className="btn"; b.textContent="Kirim ulang"; b.onclick=()=>studentSend(LV.lastSend.q,LV.lastSend.choice); act.appendChild(b); }
+    }
+    $("#lv-stats").innerHTML=""; $("#lv-fb").innerHTML="";
+  } else {
+    const tl=liveTally(q,st.round,LV.answers,LV.players);
+    $("#lv-stats").innerHTML=statsHTML(q,tl,st.status==="revealed");
+    if(st.status==="closed") dyn.textContent=eff?`Voting ditutup. Jawabanmu: ${eff.split("").join(", ")}. Menunggu guru menampilkan jawaban benar.`:"Voting ditutup. Kamu belum mengirim jawaban.";
+    else { const ok=eff===keyOf(q); dyn.textContent="";
+      $("#lv-fb").innerHTML=`<div class="fb ${ok?"ok":"no"}" style="margin-top:12px"><div><h3>${ok?"Benar!":eff?"Belum tepat":"Tidak menjawab"}</h3><p>${ok?"Bagus.":`Jawaban yang benar: <b>${q.a.split("").join(", ")}</b>`}</p></div></div>`; }
+  }
+  const me=liveScores({...st,upto:st.status==="revealed"?st.idx:st.idx-1},LV.answers,LV.players).find(r=>r.uid===LV.uid);
+  const sc=$("#lv-score"); if(sc) sc.textContent=`${me?me.ok:0} benar`;
+}
+
+/* ---------- guru ---------- */
+function tset(st){
+  LV.state=st; LV.tchain=(LV.tchain||Promise.resolve()).then(()=>LV.db.doc("session/state").set(st)).catch(()=>{LV.tErr=true;});
+  liveRefresh();
+}
+function tact(act){ const n=reduceState(LV.state,act,{now:Date.now()}); if(n!==LV.state) tset(n); }
+function newSession(){
+  const order=Q.filter(q=>LV.topics.has(q.t)).map(q=>q.n); if(!order.length) return;
+  tset(reduceState(null,"new",{round:"r"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),order,limit:LV.limit}));
+}
+function teacherRefresh(){
+  const st=LV.state, key=st?`${st.round}|${st.idx}|${st.status}`:"none";
+  if(key!==LV.key){ LV.key=key; teacherShell(); }
+  teacherDyn();
+}
+function setupHTML(){
+  const total=Q.filter(q=>LV.topics.has(q.t)).length;
+  return `<div class="card" style="display:flex;flex-direction:column;gap:16px"><h2 style="font-size:1.5rem">Sesi baru</h2>
+    <div class="field"><span class="lbl">Topik soal</span><div class="chips" id="ttop">${TOPICS.map(t=>`<button class="chip" data-id="${t.id}" aria-pressed="${LV.topics.has(t.id)}">${t.name}<small>${count(t.id)}</small></button>`).join("")}</div></div>
+    <div class="field"><span class="lbl">Batas waktu per soal</span><div class="chips" id="tlim">${[[0,"Manual"],[30,"30 dtk"],[60,"60 dtk"],[90,"90 dtk"]].map(([v,n])=>`<button class="chip" data-v="${v}" aria-pressed="${LV.limit===v}">${n}</button>`).join("")}</div><div class="hint">Dengan batas waktu, voting ditutup otomatis oleh dashboard ini. Biarkan tab guru tetap terbuka.</div></div>
+    <div class="actions" style="margin:0"><button class="btn" id="tnew" ${total?"":"disabled"}>Mulai sesi baru · ${total} soal</button></div>
+    <div class="hint">Sesi baru mengosongkan statistik. Siswa yang sedang membuka halaman bergabung otomatis.</div></div>`;
+}
+function bindSetup(){
+  const t=$("#ttop"); if(!t) return;
+  t.onclick=e=>{ const b=e.target.closest(".chip"); if(!b) return; const id=b.dataset.id; LV.topics.has(id)?LV.topics.delete(id):LV.topics.add(id); LV.key=""; teacherRefresh(); };
+  $("#tlim").onclick=e=>{ const b=e.target.closest(".chip"); if(!b) return; LV.limit=+b.dataset.v; LV.key=""; teacherRefresh(); };
+  $("#tnew").onclick=newSession;
+}
+function teacherShell(){
+  const st=LV.state, box=$("#lv"); clearInterval(LV.tt);
+  if(!st){ box.innerHTML=setupHTML(); bindSetup(); return; }
+  if(st.status==="ended"){ box.innerHTML=`<div class="card"><div class="eyebrow">Sesi selesai</div><h2 style="font-size:1.6rem;margin:6px 0 12px">Peringkat kelas</h2><div id="t-lb"></div></div>${setupHTML()}`; bindSetup(); return; }
+  if(st.status==="lobby"){ box.innerHTML=`<div class="card"><div class="eyebrow">Ruang tunggu · ${st.order.length} soal</div><h2 style="font-size:1.6rem;margin:6px 0">Siswa yang sudah bergabung</h2><div id="t-players"></div>
+    <div class="actions"><button class="btn" id="t-open">Mulai soal 1</button><button class="btn ghost" id="t-end">Batalkan sesi</button></div></div>`;
+    $("#t-open").onclick=()=>tact("open"); $("#t-end").onclick=()=>tact("end"); return; }
+  const q=curQ(), last=st.idx+1>=st.order.length;
+  const ctl = st.status==="open" ? `<button class="btn" id="t-close">Tutup voting</button>`
+    : st.status==="closed" ? `<button class="btn" id="t-reveal">Tampilkan jawaban benar ke siswa</button><button class="btn ghost" id="t-reopen">Buka lagi voting</button>`
+    : `<button class="btn" id="t-next">${last?"Akhiri & lihat peringkat":"Soal berikutnya"}</button>`;
+  box.innerHTML=`<div class="hud"><span class="pill">Soal ${st.idx+1}/${st.order.length}</span><div class="grow"><div class="prog"><i style="width:${st.idx/st.order.length*100}%"></i></div></div><span class="pill" id="t-st"></span></div>
+  ${st.status==="open"&&st.limit?`<div class="timer" id="t-timer"><i></i></div>`:""}
+  <div class="card">${qHead(q)}${passHTML(q)}<div class="q">${esc(q.q)}</div><div class="opts" style="margin-top:16px">${optsHTML(q)}</div>
+    <div class="actions">${ctl}${st.status!=="revealed"?`<button class="btn ghost" id="t-end">Akhiri sesi</button>`:""}</div></div>
+  <div class="card" id="t-stats"></div><div class="card" id="t-wait" hidden></div><div class="card" id="t-lbc" hidden><h2 style="font-size:1.3rem;margin-bottom:8px">Peringkat sementara</h2><div id="t-lb"></div></div>`;
+  document.querySelectorAll("#lv .opt").forEach(b=>b.disabled=true);
+  const on=(id,f)=>{const e=$(id); if(e) e.onclick=f;};
+  on("#t-close",()=>tact("close")); on("#t-reveal",()=>tact("reveal")); on("#t-reopen",()=>tact("open")); on("#t-next",()=>tact("next")); on("#t-end",()=>tact("end"));
+  window.scrollTo({top:0});
+  if(st.status==="open"&&st.limit){
+    LV.tt=setInterval(()=>{
+      const s=LV.state, el=$("#t-timer"); if(!s||s.status!=="open"||!el){ clearInterval(LV.tt); return; }
+      const left=s.limit-(Date.now()-s.openedAt)/1000;
+      el.firstElementChild.style.width=Math.max(0,left/s.limit*100)+"%"; el.classList.toggle("low",left<=10);
+      const p=$("#t-st"); if(p) p.textContent=Math.ceil(Math.max(0,left))+" dtk";
+      if(left<=0){ clearInterval(LV.tt); tact("close"); }
+    },250);
+  }
+}
+function teacherDyn(){
+  const st=LV.state;
+  if(st&&st.status==="lobby"){ const pl=roundPlayers(); $("#t-players").innerHTML=pl.length?namesHTML(pl)+`<p class="hint">${pl.length} siswa bergabung.</p>`:`<p class="hint">Belum ada siswa. Minta siswa membuka halaman ini dan memilih Kelas live.</p>`; return; }
+  if(!st) return;
+  if(st.status==="ended"){ const e=$("#t-lb"); if(e) e.innerHTML=lbHTML(liveScores(st,LV.answers,LV.players),null,40); return; }
+  const q=curQ(); if(!q) return;
+  const tl=liveTally(q,st.round,LV.answers,LV.players), showKey=st.status!=="open";
+  document.querySelectorAll("#lv .opt").forEach((b,k)=>{ b.classList.remove("right","dim"); b.querySelector(".mark").textContent=""; if(showKey){ if(q.a.includes(L[k])){b.classList.add("right"); b.querySelector(".mark").textContent="✓";} else b.classList.add("dim"); } });
+  $("#t-stats").innerHTML=statsHTML(q,tl,showKey);
+  const w=$("#t-wait"); w.hidden=!(tl.waiting.length&&st.status!=="revealed");
+  if(!w.hidden) w.innerHTML=`<b>Belum menjawab (${tl.waiting.length})</b>${namesHTML(tl.waiting)}`;
+  const p=$("#t-st"); if(p&&!(st.status==="open"&&st.limit)) p.textContent=st.status==="open"?"Voting dibuka":st.status==="closed"?"Voting ditutup":"Jawaban ditampilkan";
+  const lbc=$("#t-lbc"); lbc.hidden=st.status!=="revealed"; if(!lbc.hidden) $("#t-lb").innerHTML=lbHTML(liveScores(st,LV.answers,LV.players),null,5);
+}
+
+/* ---------- koneksi ---------- */
+(async()=>{
+  try{
+    if(!(window.claude&&window.claude.use)) return;
+    const user=await window.claude.use("user");
+    if(user){ LV.admin=(await user.canEdit())||(await user.isOwner()); LV.uid=await user.id(); LV.can=await user.can("data.write"); }
+    const db=await window.claude.use("db");
+    if(db&&LV.uid){
+      LV.db=db;
+      const bad=()=>{LV.subErr=true; liveSchedule();};
+      db.doc("session/state").onSnapshot(s=>{ LV.state=s.exists?s.data():null; LV.loaded=true; liveSchedule(); },bad);
+      db.collection("players").onSnapshot(s=>{ LV.players={}; s.docs.forEach(d=>{LV.players[d.id]=d.data()||{};}); LV.loadedP=true; liveSchedule(); },bad);
+      db.collection("answers").onSnapshot(s=>{ LV.answers={}; s.docs.forEach(d=>{LV.answers[d.id]=d.data()||{};}); LV.ansPending=s.metadata.hasPendingWrites; liveSchedule(); },bad);
+    }
+  }catch(e){}
+  LV.init=true;
+  const w=$("#lw"); if(w&&SCREEN==="live"&&!LV.view) live();
+  if(SCREEN==="home"){
+    try{ const r=JSON.parse(lsGet(LK)||"null"); if(r&&LV.db&&Date.now()-r.t<6*3600e3&&(r.v==="siswa"||LV.admin)){ LV.name=lsGet(NK)||LV.name; if(r.v==="guru"||LV.name){ enterLive(r.v); } } }catch(e){}
+  }
+})();
+
+home();
+</script>
+
+</body></html>
